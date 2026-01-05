@@ -8,9 +8,3 @@ def health():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
-
-@app.route("/info")
-def info():
-    return jsonify(module="infotainment", version="1.0.0")
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
