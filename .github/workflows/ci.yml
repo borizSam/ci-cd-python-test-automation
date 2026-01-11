@@ -1,9 +1,9 @@
-name: CI Pipeline
+name: CI Validation Pipeline
 
 on: [push, pull_request]
 
 jobs:
-  test:
+  validation:
     runs-on: ubuntu-latest
 
     steps:
@@ -18,10 +18,27 @@ jobs:
         run: |
           pip install flask requests pytest
 
-      - name: Run application
+      - name: Start application
         run: |
           python app/main.py &
           sleep 5
 
-      - name: Run tests
-        run: pytest tests/
+      - name: Unit tests
+        run: pytest tests/unit
+
+      - name: Integration tests
+        run: pytest tests/integration
+
+      - name: Performance tests
+        run: pytest tests/performance
+
+      - name: Generate test report
+        if: always()
+        run: pytest --junitxml=report.xml
+
+      - name: Upload test report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report
+          path: report.xml

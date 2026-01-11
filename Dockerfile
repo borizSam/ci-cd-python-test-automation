@@ -4,6 +4,7 @@ WORKDIR /app
 
 COPY app/ app/
 COPY tests/ tests/
+COPY scripts/ scripts/
 
 RUN pip install flask requests pytest
 

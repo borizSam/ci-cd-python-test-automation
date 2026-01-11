@@ -2,7 +2,7 @@
 
 ## What is this?
 
-Proyecto **simple y directo** que demuestra cómo diseñar un **pipeline de CI/CD** para validar automáticamente software, inspirado en flujos reales de **validación de software de vehículo / infotainment**.
+Proyecto **simple y directo** que demuestra cómo diseñar un **pipeline de CI/CD** para validar automáticamente software, inspirado en flujos reales de **validación de software / infotainment**.
 
 Cada cambio de código se prueba automáticamente usando **tests en Python**, bloqueando errores antes de integrarlos.
 
