@@ -1,92 +1,132 @@
-# Plataforma de Validación Automatizada CI/CD
+# CI/CD Python Test Automation
 
-## What is this?
+## Descripción
 
-Proyecto **simple y directo** que demuestra cómo diseñar un **pipeline de CI/CD** para validar automáticamente software, inspirado en flujos reales de **validación de software / infotainment**.
+Repositorio de ejemplo que muestra cómo **validar software de forma automática** mediante un **pipeline de CI/CD**, usando Python y GitHub Actions.
 
-Cada cambio de código se prueba automáticamente usando **tests en Python**, bloqueando errores antes de integrarlos.
-
----
-
-## Skills demostrados
-
-* Integración Continua (CI) con **GitHub Actions**
-* Automatización de tests en **Python (pytest)**
-* Validación automática en cada commit
-* Buenas prácticas con **Git**
-* Enfoque *shift-left testing*
+La idea es simular un flujo real de validación como los que se usan en entornos industriales / infotainment, integrando **calidad y testing directamente en el pipeline**.
 
 ---
 
-## 🧱 Estructura
+## Objetivo
+
+* Ejecutar validaciones automáticas en cada commit
+* Detectar errores lo antes posible (*shift-left testing*)
+* Garantizar que solo el código válido se integra
+
+---
+
+## Estructura del proyecto
 
 ```
-├── app/        # Servicio simulado de infotainment
-├── tests/      # Tests automatizados en Python
-├── scripts/    # Smoke tests
-├── .github/    # Pipeline CI/CD
-└── Dockerfile  # Opcional
+├── app/                 # Servicio simulado en Python
+│   └── main.py
+│
+├── tests/
+│   ├── unit/            # Tests rápidos
+│   ├── integration/     # Tests de integración
+│   └── performance/     # Validaciones básicas de rendimiento
+│
+├── scripts/             # Automatización y smoke tests
+│   └── smoke_test.sh
+│
+├── .github/workflows/   # Pipeline CI/CD
+│   └── ci.yml
+│
+├── Dockerfile           # Contenerización opcional
+└── README.md
 ```
 
 ---
 
-## Validación automática
+## Aplicación simulada
 
-* Test de disponibilidad del servicio
-* Validación de respuesta y estado
-* Smoke test rápido en Bash
+Servicio sencillo en **Python (Flask)** que expone un endpoint de salud:
 
-Los tests se ejecutan:
+```
+GET /health
+```
 
-* En local
-* Automáticamente en el pipeline CI
+Respuesta esperada:
 
-Si un test falla → el cambio no pasa.
+```json
+{
+  "status": "OK",
+  "module": "infotainment"
+}
+```
+
+El foco del proyecto no es la lógica de negocio, sino la **validación automática**.
+
+---
+
+## Estrategia de validación
+
+La validación está estructurada por niveles:
+
+* **Tests unitarios**: validaciones rápidas
+* **Tests de integración**: validan el servicio en ejecución
+* **Tests de rendimiento**: comprobaciones básicas de tiempo de respuesta
+* **Smoke test**: validación rápida post-arranque
+
+Este enfoque permite obtener **feedback rápido** y bloquear cambios no válidos.
 
 ---
 
 ## Pipeline CI/CD
 
-El pipeline:
+El pipeline (GitHub Actions) ejecuta:
 
-1. Descarga el código
-2. Configura Python
-3. Arranca la aplicación
-4. Ejecuta los tests
-5. Falla si algo no es válido
+1. Checkout del código
+2. Configuración del entorno Python
+3. Instalación de dependencias
+4. Arranque del servicio
+5. Ejecución de tests por fases
+6. Generación de reporte de resultados
 
-Esto garantiza **calidad continua**.
+Si alguna validación falla, el pipeline falla.
 
 ---
 
-## ▶️ Ejecutar en local
+## Ejecutar en local
 
 ```bash
 python3 -m venv venv
 source venv/bin/activate
 pip install flask requests pytest
 python app/main.py
+```
+
+En otra terminal:
+
+```bash
 pytest tests/
 ```
 
 ---
 
-## Por qué existe
+## Ejecutar con Docker
 
-Simular un entorno real donde:
+```bash
+docker build -t ci-cd-validation .
+docker run -d -p 5000:5000 ci-cd-validation
+```
 
-* El software se valida automáticamente
-* Los errores se detectan pronto
-* La calidad es parte del pipeline, no un paso manual
+Tests dentro del contenedor:
+
+```bash
+docker exec -it <container_id> pytest tests/
+```
 
 ---
 
-## Próximos pasos
+##  Conceptos clave
 
-* Jenkins / Bamboo
-* Más tests automáticos
-* Despliegue en Kubernetes (K3s)
-* Integración con AWS
+* Integración Continua (CI/CD)
+* Automatización de tests en Python
+* Validación por fases
+* Git y buenas prácticas
+* Entornos reproducibles
 
 ---
 
